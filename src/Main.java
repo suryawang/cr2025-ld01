@@ -4,7 +4,10 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import report.GradeHtmlView;
 import report.GradeReport;
+import report.GradeTableView;
+import report.ReportView;
 //import model.Grade;
 import util.GradeFactory;
 
@@ -23,9 +26,15 @@ public class Main {
 //			System.out.println(grade);
 			
 		}
-		report.print(System.out);
-		report.print(new PrintStream(new FileOutputStream("grade_report.txt")));
-		report.printHtml(System.out);
-		report.printHtml(new PrintStream(new FileOutputStream("grade_report.html")));
+//		report.print(System.out);
+//		report.print(new PrintStream(new FileOutputStream("grade_report.txt")));
+//		report.printHtml(System.out);
+//		report.printHtml(new PrintStream(new FileOutputStream("grade_report.html")));
+		print(new GradeTableView(report),"grade_report.txt");
+		print(new GradeHtmlView(report),"grade_report.html");
+	}
+	static void print(ReportView view, String filename) throws FileNotFoundException {
+		view.print(System.out);
+		view.print(new PrintStream(new FileOutputStream(filename)));
 	}
 }
