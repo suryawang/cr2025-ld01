@@ -1,5 +1,7 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 import report.GradeReport;
@@ -21,6 +23,7 @@ public class Main {
 //			System.out.println(grade);
 			
 		}
-		report.print();
+		report.print(System.out);
+		report.print(new PrintStream(new FileOutputStream("grade_report.txt")));
 	}
 }
