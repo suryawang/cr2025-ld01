@@ -2,7 +2,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import model.Grade;
+//import model.Grade;
+import util.GradeFactory;
 
 public class Main {
 	public static void main(String[] args) throws FileNotFoundException {
@@ -13,11 +14,11 @@ public class Main {
 			var line = sc.nextLine();
 //			System.out.println(line);
 			var d = line.split("\t");
-			int project = Integer.parseInt(d[1]);
-			int midTerm = Integer.parseInt(d[2]);
-			int finalTerm = Integer.parseInt(d[3]);
-			
-			var grade = new Grade(d[0], project, midTerm, finalTerm);
+//			int project = Integer.parseInt(d[1]);
+//			int midTerm = Integer.parseInt(d[2]);
+//			int finalTerm = Integer.parseInt(d[3]);
+
+			var grade = GradeFactory.createGrade(d[0], d[1], d[2], d[3]);
 			System.out.println(grade);
 			
 //			int total = project * 5 + midTerm * 2 + finalTerm * 3;

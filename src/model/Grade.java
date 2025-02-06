@@ -1,6 +1,6 @@
 package model;
 
-public class Grade {
+public abstract class Grade {
 	// fields
 	private String studentId;
 	private int project;
@@ -19,17 +19,18 @@ public class Grade {
 		int total = project * 5 + midTerm * 2 + finalTerm * 3;
 		return total / 10 + (total % 10 > 0 ? 1 : 0);
 	}
-	public String getGrade() {
-		int total = getTotal();
-		if(total >= 90) return "A";
-		if(total >= 85) return "A-";
-		if(total >= 80) return "B+";
-		if(total >= 75) return "B";
-		if(total >= 70) return "B-";
-		if(total >= 65) return "C";
-		if(total >= 50) return "D";
-		return "E";
-	}
+	public abstract String getGrade();
+//	public String getGrade() {
+//		int total = getTotal();
+//		if(total >= 90) return "A";
+//		if(total >= 85) return "A-";
+//		if(total >= 80) return "B+";
+//		if(total >= 75) return "B";
+//		if(total >= 70) return "B-";
+//		if(total >= 65) return "C";
+//		if(total >= 50) return "D";
+//		return "E";
+//	}
 
 	public String getStudentId() {
 		return studentId;
