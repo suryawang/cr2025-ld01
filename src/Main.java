@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import report.GradeCsvView;
 import report.GradeHtmlView;
 import report.GradeReport;
 import report.GradeTableView;
@@ -32,6 +33,7 @@ public class Main {
 //		report.printHtml(new PrintStream(new FileOutputStream("grade_report.html")));
 		print(new GradeTableView(report),"grade_report.txt");
 		print(new GradeHtmlView(report),"grade_report.html");
+		print(new GradeCsvView(report),"grade_report.csv");
 	}
 	static void print(ReportView view, String filename) throws FileNotFoundException {
 		view.print(System.out);
