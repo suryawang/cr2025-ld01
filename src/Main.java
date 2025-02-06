@@ -25,5 +25,7 @@ public class Main {
 		}
 		report.print(System.out);
 		report.print(new PrintStream(new FileOutputStream("grade_report.txt")));
+		report.printHtml(System.out);
+		report.printHtml(new PrintStream(new FileOutputStream("grade_report.html")));
 	}
 }
