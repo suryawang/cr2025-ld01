@@ -1,49 +1,32 @@
 package primitive_obsession;
 
-import java.util.Calendar;
+import java.util.Date;
 
 public class Student {
 	private FullName name;
-	private int dayOfBirth;
-	private int monthOfBirth;
-	private int yearOfBirth;
-	
+	private BirthDate birthDate;
 	//reguler | global
 	private String type;
 	
-	public Student(FullName name, String type, int dayOfBirth, int monthOfBirth, int yearOfBirth) {
+	public Student(FullName name, String type, BirthDate birthDate) {
 		type = type.toLowerCase();
 		if(!type.equals("reguler") && !type.equals("global")) {
 			throw new IllegalArgumentException("type is not valid");
 		}
 		
-		if(!isValidDate(dayOfBirth, monthOfBirth, yearOfBirth)) {
-			throw new IllegalArgumentException("dob is not valid");
-		}
-		
+		this.name = name;
 		this.type = type;
-		this.dayOfBirth = dayOfBirth;
-		this.monthOfBirth = monthOfBirth;
-		this.yearOfBirth = yearOfBirth;
+		this.birthDate = birthDate;
 	}
 
-	private boolean isValidDate(int dayOfBirth, int monthOfBirth, int yearOfBirth) {
-		Calendar cal = Calendar.getInstance();
-		cal.setLenient(false);
-		cal.set(yearOfBirth, monthOfBirth-1, dayOfBirth);
-		try {
-			cal.getTime();
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
-	}
-	
 	public String getType() {
 		return type;
 	}
 	
 	public String getName() {
 		return name.getName();
+	}
+	public Date getBirthDate() {
+		return birthDate.get();
 	}
 }
