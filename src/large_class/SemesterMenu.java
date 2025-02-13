@@ -32,13 +32,13 @@ public class SemesterMenu {
 	private void create() {		
 		String label;
 		do {
-			label = getStringInput("Input label", 3, 20);
+			label = new StringInputer(scan, "Input label", 3, 20).get();
 		} while(!isLabelUnique(label));
 		
 		Date startDate, endDate;
 		do {
-			startDate = getDateInput("Input start date", "yyyy-MM-dd");	
-			endDate = getDateInput("Input end date", "yyyy-MM-dd");
+			startDate = new DateInputer(scan, "Input start date", "yyyy-MM-dd").get();	
+			endDate = new DateInputer(scan, "Input end date", "yyyy-MM-dd").get();
 		} while(startDate.after(endDate));
 
 		semesters.add(new Semester(label, startDate, endDate));
@@ -52,7 +52,7 @@ public class SemesterMenu {
 	}
 
 	private void delete() {
-		int input = getIntInput("Choose semester", 1, semesters.size());
+		int input = new IntInputer(scan,"Choose semester", 1, semesters.size()).get();
 		semesters.removeElementAt(input-1);
 	}
 	
@@ -60,7 +60,7 @@ public class SemesterMenu {
 		System.out.println("1. Create");
 		System.out.println("2. Delete");
 		System.out.println("3. Exit");
-		return getIntInput("input menu", 1, 3);
+		return new IntInputer(scan, "input menu", 1, 3).get();
 	}
 
 	private void showSemesters() {
@@ -81,46 +81,5 @@ public class SemesterMenu {
 		System.out.print(format.format(s.getStart()));
 		System.out.print(" - ");
 		System.out.print(format.format(s.getEnd()));
-	}
-
-	private Date getDateInput(String message, String format) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		sdf.setLenient(false);
-		
-		Date date = null;
-		do {
-			try {
-				System.out.print(message + " ["+format+"]: ");
-				String input = scan.nextLine().trim();
-				date = sdf.parse(input);
-			} catch (Exception e) {
-				date = null;
-			}
-		} while(date == null);
-		return date;
-	}
-	
-	private int getIntInput(String message, int min, int max) {
-		int input;
-		do{
-			System.out.print(message + " ["+min+"-"+max+"]: ");
-			try {
-				input = scan.nextInt();
-			} catch (Exception e) {
-				input = 0;
-			} finally {
-				scan.nextLine();
-			}
-		}while(input < min || input > max);
-		return input;
-	}
-	
-	private String getStringInput(String message, int min, int max) {
-		String input;
-		do{
-			System.out.print(message + " ["+min+"-"+max+" chars]: ");
-			input = scan.nextLine().trim();
-		}while(input.length() < min || input.length() > max);
-		return input;
 	}
 }
