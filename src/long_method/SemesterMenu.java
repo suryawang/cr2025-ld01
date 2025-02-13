@@ -20,7 +20,39 @@ public class SemesterMenu {
 	}
 
 	private boolean menu() {
-		// menampilkan semua semester yang ada
+		showAllSemesters();
+		displayMenuList();
+
+		switch (chooseMenu()) {
+		case 1: create(); break;
+		case 2: delete(); break;
+		case 3: return false;
+		}
+		return true;
+	}
+
+	private int chooseMenu() {
+		int input = 0;
+		do {
+			System.out.print("Input [1-3]: ");
+			try {
+				input = scan.nextInt();
+			} catch (Exception e) {
+				input = 0;
+			} finally {
+				scan.nextLine();
+			}
+		} while (input < 1 || input > 3);
+		return input;
+	}
+
+	private void displayMenuList() {
+		System.out.println("1. Create");
+		System.out.println("2. Delete");
+		System.out.println("3. Exit");
+	}
+
+	private void showAllSemesters() {
 		for (int i = 0; i < semesters.size(); i++) {
 			Semester s = semesters.elementAt(i);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -34,37 +66,6 @@ public class SemesterMenu {
 			System.out.println("");
 		}
 		System.out.println("");
-
-		// menampilkan menu
-		System.out.println("1. Create");
-		System.out.println("2. Delete");
-		System.out.println("3. Exit");
-
-		// input
-		int input = 0;
-		do {
-			System.out.print("Input [1-3]: ");
-			try {
-				input = scan.nextInt();
-			} catch (Exception e) {
-				input = 0;
-			} finally {
-				scan.nextLine();
-			}
-		} while (input < 1 || input > 3);
-
-		// switch menu by input
-		switch (input) {
-		case 1:
-			create();
-			break;
-		case 2:
-			delete();
-			break;
-		case 3:
-			return false;
-		}
-		return true;
 	}
 
 	private void delete() {
@@ -83,11 +84,7 @@ public class SemesterMenu {
 	}
 
 	private void create() {
-		String label = "";
-		do {
-			System.out.print("Input label [3-20 chars]: ");
-			label = scan.nextLine().trim();
-		} while (label.length() < 3 || label.length() > 20 || !isLabelUnique(label));
+		String label = inputSemesterLabel();
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		format.setLenient(false);
@@ -96,28 +93,48 @@ public class SemesterMenu {
 		Date endDate = null;
 
 		do {
-			do {
-				try {
-					System.out.print("Input start date [yyyy-MM-dd]: ");
-					String input = scan.nextLine().trim();
-					startDate = format.parse(input);
-				} catch (Exception e) {
-					startDate = null;
-				}
-			} while (startDate == null);
-
-			do {
-				try {
-					System.out.print("Input end date [yyyy-MM-dd]: ");
-					String input = scan.nextLine().trim();
-					endDate = format.parse(input);
-				} catch (Exception e) {
-					endDate = null;
-				}
-			} while (endDate == null);
+			startDate = inputStartDate(format);
+			endDate = inputEndDate(format);
 		} while (startDate.after(endDate));
 
 		semesters.add(new Semester(label, startDate, endDate));
+	}
+
+	private Date inputEndDate(SimpleDateFormat format) {
+		Date endDate;
+		do {
+			try {
+				System.out.print("Input end date [yyyy-MM-dd]: ");
+				String input = scan.nextLine().trim();
+				endDate = format.parse(input);
+			} catch (Exception e) {
+				endDate = null;
+			}
+		} while (endDate == null);
+		return endDate;
+	}
+
+	private Date inputStartDate(SimpleDateFormat format) {
+		Date startDate;
+		do {
+			try {
+				System.out.print("Input start date [yyyy-MM-dd]: ");
+				String input = scan.nextLine().trim();
+				startDate = format.parse(input);
+			} catch (Exception e) {
+				startDate = null;
+			}
+		} while (startDate == null);
+		return startDate;
+	}
+
+	private String inputSemesterLabel() {
+		String label = "";
+		do {
+			System.out.print("Input label [3-20 chars]: ");
+			label = scan.nextLine().trim();
+		} while (label.length() < 3 || label.length() > 20 || !isLabelUnique(label));
+		return label;
 	}
 
 	private boolean isLabelUnique(String label) {
