@@ -1,22 +1,22 @@
 package exercise;
 import java.util.Date;
 
-
 public class DecomposeConditional {
 
 	class Stadium {
-		  private final Date SUMMER_START = new Date(1500);
-		  private final Date SUMMER_END = new Date(2500);
-		  public double summerRate;
-		  public double winterRate;
-		  public double winterServiceCharge;
-		  public Stadium(double summer, double winter, double service) {
-			  this.summerRate = summer;
-			  this.winterRate = winter;
-			  this.winterServiceCharge = service;
-		  }
+		private final Date SUMMER_START = new Date(1500);
+		private final Date SUMMER_END = new Date(2500);
+		public double summerRate;
+		public double winterRate;
+		public double winterServiceCharge;
 
-		//TODO condition completed
+		public Stadium(double summer, double winter, double service) {
+			this.summerRate = summer;
+			this.winterRate = winter;
+			this.winterServiceCharge = service;
+		}
+
+		// TODO completed: Decomposed conditional logic into separate methods
 		public double getTicketPrice(Date date, int quantity) {
 			if (isWinterSeason(date)) {
 				return calculateWinterCharge(quantity);
@@ -36,14 +36,15 @@ public class DecomposeConditional {
 			return quantity * summerRate;
 		}
 	}
+
 	public void test() {
 		Stadium s = new Stadium(100, 90, 25);
-		System.out.println(s.getTicketPrice(new Date(1000), 10));
-		System.out.println(s.getTicketPrice(new Date(2000), 10));
-		System.out.println(s.getTicketPrice(new Date(3000), 10));
+		System.out.println(s.getTicketPrice(new Date(1000), 10)); 
+		System.out.println(s.getTicketPrice(new Date(2000), 10)); 
+		System.out.println(s.getTicketPrice(new Date(3000), 10)); 
 	}
+
 	public static void main(String[] args) {
 		new DecomposeConditional().test();
 	}
-
 }
