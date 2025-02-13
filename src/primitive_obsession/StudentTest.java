@@ -9,7 +9,7 @@ class StudentTest {
 	@Test
 	void testSuccess() {
 		try {
-			Student m = new Student(new FullName("Amir Budianto"), "reguler", new BirthDate(20, 11, 1999));	
+			Student m = new Student(new FullName("Amir Budianto"), StudentType.Reguler, new BirthDate(20, 11, 1999));	
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
@@ -18,7 +18,7 @@ class StudentTest {
 	@Test
 	void testErrorName() {
 		try {
-			Student m = new Student(new FullName("amir budianto123"), "reguler", new BirthDate( 20, 11, 1999));	
+			Student m = new Student(new FullName("amir budianto123"), StudentType.Reguler, new BirthDate( 20, 11, 1999));	
 		} catch (Exception e) {
 			return;
 		}
@@ -28,7 +28,7 @@ class StudentTest {
 	@Test
 	void testErrorDoB() {
 		try {
-			Student m = new Student(new FullName("Amir Budianto"), "reguler", new BirthDate(37, 11, 1999));	
+			Student m = new Student(new FullName("Amir Budianto"), StudentType.Reguler, new BirthDate(37, 11, 1999));	
 		} catch (Exception e) {
 			return;
 		}

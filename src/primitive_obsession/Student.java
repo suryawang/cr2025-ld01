@@ -5,22 +5,16 @@ import java.util.Date;
 public class Student {
 	private FullName name;
 	private BirthDate birthDate;
-	//reguler | global
-	private String type;
+	private StudentType type;
 	
-	public Student(FullName name, String type, BirthDate birthDate) {
-		type = type.toLowerCase();
-		if(!type.equals("reguler") && !type.equals("global")) {
-			throw new IllegalArgumentException("type is not valid");
-		}
-		
+	public Student(FullName name, StudentType type, BirthDate birthDate) {
 		this.name = name;
 		this.type = type;
 		this.birthDate = birthDate;
 	}
 
 	public String getType() {
-		return type;
+		return type.toString();
 	}
 	
 	public String getName() {
