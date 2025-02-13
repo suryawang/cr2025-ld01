@@ -4,23 +4,19 @@ import java.util.Date;
 
 public class Kelas {
 	private String course;
-	private Date start;
-	private Date end;
+	private DateRange range;
 
 	public Kelas(String course, Date start, Date end) {
-		if (start.before(end))
-			throw new IllegalArgumentException("start must be before end.");
 		this.course = course;
-		this.start = start;
-		this.end = end;
+		this.range = new DateRange(start, end);
 	}
 
 	public Date getStart() {
-		return start;
+		return range.getStart();
 	}
 
 	public Date getEnd() {
-		return end;
+		return range.getEnd();
 	}
 
 	public String getCourse() {

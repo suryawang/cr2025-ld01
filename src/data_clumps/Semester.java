@@ -4,15 +4,11 @@ import java.util.Date;
 
 public class Semester {
 	private String label;
-	private Date start;
-	private Date end;
+	private DateRange range;
 	
 	public Semester(String label, Date start, Date end) {
-		if(start.before(end))
-			throw new IllegalArgumentException("start must be before end.");
 		this.label = label;
-		this.start = start;
-		this.end = end;
+		this.range = new DateRange(start, end);
 	}
 	
 	public String getLabel() {
@@ -20,10 +16,10 @@ public class Semester {
 	}
 	
 	public Date getStart() {
-		return start;
+		return range.getStart();
 	}
 	
 	public Date getEnd() {
-		return end;
+		return range.getEnd();
 	}
 }
