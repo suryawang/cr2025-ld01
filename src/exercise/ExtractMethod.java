@@ -1,6 +1,6 @@
 package exercise;
-import java.util.Enumeration;
 
+import java.util.Enumeration;
 
 public class ExtractMethod {
 
@@ -8,54 +8,62 @@ public class ExtractMethod {
 		ExtractMethod test = new ExtractMethod("Andi");
 		test.printOwing();
 	}
+
 	private Order orders;
 	private String name;
+
 	public String getName() {
 		return name;
 	}
+
 	public ExtractMethod(String name) {
 		this.name = name;
 		orders = new Order();
 	}
-	// TODO: reduce this method with extract method
+
 	void printOwing() {
-	  Enumeration elements = orders.elements();
-	  double outstanding = 0.0;
-
-	  // print banner
-	  System.out.println ("*****************************");
-	  System.out.println ("****** Customer totals ******");
-	  System.out.println ("*****************************");
-
-	  // print owings
-	  while (elements.hasMoreElements()) {
-	    Order each = (Order) elements.nextElement();
-	    outstanding += each.getAmount();
-	  }
-
-	  // print details
-	  System.out.println("name: " + name);
-	  System.out.println("amount: " + outstanding);
+		printBanner(); 
+		double outstanding = calculateOutstanding();
+		printDetails(outstanding); 
 	}
-	
+
+	private void printBanner() {
+		System.out.println("*****************************");
+		System.out.println("****** Customer totals ******");
+		System.out.println("*****************************");
+	}
+
+	private double calculateOutstanding() {
+		double outstanding = 0.0;
+		Enumeration elements = orders.elements();
+		while (elements.hasMoreElements()) {
+			Order each = (Order) elements.nextElement();
+			outstanding += each.getAmount();
+		}
+		return outstanding;
+	}
+
+	private void printDetails(double outstanding) {
+		System.out.println("name: " + name);
+		System.out.println("amount: " + outstanding);
+	}
+
 	class Order implements Enumeration {
-		private double [] amounts;
+		private double[] amounts;
 		private int currentIndex;
+
 		public Order() {
 			amounts = new double[5];
-			currentIndex  = 0;
+			currentIndex = 0;
 			amounts[0] = 12.0;
-			amounts[1] =  2.5;
-			amounts[2] =  3.2;
-			amounts[3] =  7.05;
-			amounts[4] =  6.0;
+			amounts[1] = 2.5;
+			amounts[2] = 3.2;
+			amounts[3] = 7.05;
+			amounts[4] = 6.0;
 		}
-		
+
 		public boolean hasMoreElements() {
-			if(currentIndex < amounts.length) {
-				return true;
-			}
-			return false;
+			return currentIndex < amounts.length;
 		}
 
 		public Enumeration elements() {
@@ -67,9 +75,8 @@ public class ExtractMethod {
 		}
 
 		public Object nextElement() {
-			currentIndex ++;
+			currentIndex++;
 			return this;
 		}
-		
 	}
 }
