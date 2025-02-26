@@ -3,26 +3,52 @@ public class ExtractClass {
 // todo extract class TelephoneNumber from class Person
 	class Person {
 	  private String name;
-	  private String officeAreaCode;
-	  private String officeNumber;
-
+	  private TelephoneNumber number;
+	  
 	  public String getName() {
 		return name;
 	  }
 	  public String getTelephoneNumber() {
-		return ("(" + officeAreaCode + ") " + officeNumber);
+		return number.getTelephoneNumber();
 	  }
 	  public String getOfficeAreaCode() {
-		return officeAreaCode;
+		return number.getOfficeAreaCode();
 	  }
 	  public void setOfficeAreaCode(String arg) {
-		officeAreaCode = arg;
+		number.setOfficeAreaCode(arg);
 	  }
 	  public String getOfficeNumber() {
-		return officeNumber;
+		return number.getOfficeNumber();
 	  }
 	  public void setOfficeNumber(String arg) {
-		officeNumber = arg;
+		number.setOfficeNumber(arg);
 	  }
+	}
+	class TelephoneNumber{
+		private String officeAreaCode;
+		private String officeNumber;
+		
+		public TelephoneNumber(String officeAreaCode, String officeNumber) {
+			this.officeAreaCode=officeAreaCode;
+			this.officeNumber = officeNumber;
+		}
+		public String getOfficeAreaCode() {
+	        return officeAreaCode;
+	    }
+
+	    public void setOfficeAreaCode(String officeAreaCode) {
+	        this.officeAreaCode = officeAreaCode;
+	    }
+
+	    public String getOfficeNumber() {
+	        return officeNumber;
+	    }
+
+	    public void setOfficeNumber(String officeNumber) {
+	        this.officeNumber = officeNumber;
+	    }
+	    public String getTelephoneNumber() {
+			return ("(" + this.officeAreaCode + ") " + this.officeNumber);
+		  }
 	}
 }

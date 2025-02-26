@@ -18,24 +18,35 @@ public class ExtractMethod {
 		orders = new Order();
 	}
 	// TODO: reduce this method with extract method
+	void printBanner() {
+		System.out.println ("*****************************");
+		  System.out.println ("****** Customer totals ******");
+		  System.out.println ("*****************************");
+	}
+	void printDetail(String name, double outstanding) {
+		System.out.println("name: " + name);
+		  System.out.println("amount: " + outstanding);
+	}
+	double getOwings(Enumeration elements) {
+		double outstanding = 0.0;
+		while (elements.hasMoreElements()) {
+		    Order each = (Order) elements.nextElement();
+		    outstanding += each.getAmount();
+		  }
+		return outstanding;
+	}
 	void printOwing() {
 	  Enumeration elements = orders.elements();
 	  double outstanding = 0.0;
 
 	  // print banner
-	  System.out.println ("*****************************");
-	  System.out.println ("****** Customer totals ******");
-	  System.out.println ("*****************************");
+	  printBanner();
 
 	  // print owings
-	  while (elements.hasMoreElements()) {
-	    Order each = (Order) elements.nextElement();
-	    outstanding += each.getAmount();
-	  }
+	  outstanding += getOwings(elements);
 
 	  // print details
-	  System.out.println("name: " + name);
-	  System.out.println("amount: " + outstanding);
+	  printDetail(this.name, outstanding);
 	}
 	
 	class Order implements Enumeration {
