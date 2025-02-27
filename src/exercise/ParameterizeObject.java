@@ -7,9 +7,22 @@ import java.util.Vector;
 public class ParameterizeObject {
 	// TODO: change the logic of Date start & Date end of this Account class by
 	//       introduce parameter object
+	
+	class dateParam{
+		  private Date dateStart;
+		  private Date dateEnd;
+		  
+		  public dateParam(Date dateStart, Date dateEnd) {
+			  this.dateEnd = dateEnd;
+			  this.dateStart = dateStart;	
+		  }
+	  }
+	  
 	class Account {
 		  // ...
 		  private Vector transactions = new Vector();
+		  
+		  
 		  public Account() {
 			  transactions.add(new Transaction(1000, new Date(1000)));
 			  transactions.add(new Transaction(1200, new Date(1100)));
@@ -17,12 +30,12 @@ public class ParameterizeObject {
 			  transactions.add(new Transaction(1300, new Date(1300)));
 		  }
 
-		  public double getFlowBetween(Date start, Date end) {
+		  public double getFlowBetween(dateParam dateRange) {
 		    double result = 0;
 		    Enumeration e = transactions.elements();
 		    while (e.hasMoreElements()) {
 		      Transaction each = (Transaction) e.nextElement();
-		      if (each.getDate().compareTo(start) >= 0 && each.getDate().compareTo(end) <= 0) {
+		      if (each.getDate().compareTo(dateRange.dateStart) >= 0 && each.getDate().compareTo(dateRange.dateEnd) <= 0) {
 		        result += each.getValue();
 		      }
 		    }
@@ -50,7 +63,10 @@ public class ParameterizeObject {
 		Account account = new Account();
 		Date startDate = new Date(1050);
 		Date endDate = new Date(1250);
-		double flow = account.getFlowBetween(startDate, endDate);
+		
+		dateParam dateRange = new dateParam(startDate, endDate);
+		
+		double flow = account.getFlowBetween(dateRange);
 		System.out.println(flow);
 		
 	}
