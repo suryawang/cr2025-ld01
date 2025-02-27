@@ -11,9 +11,11 @@ public class PreserveObject {
 
 		// TODO: replace low & high in this withinPlan with preserve whole object
 		public boolean withinPlan(HeatingPlan plan) {
+			
 			int low = getLowestTemp();
 			int high = getHighestTemp();
-			return plan.withinRange(low, high);
+			TempRange temp = new TempRange(low, high);
+			return plan.withinRange(temp);
 		}
 
 		private int getHighestTemp() {
@@ -33,8 +35,8 @@ public class PreserveObject {
 			range = new TempRange(from, to);
 		}
 
-		public boolean withinRange(int low, int high) {
-			return (low >= range.getLow() && high <= range.getHigh());
+		public boolean withinRange(TempRange temp) {
+			return (temp.low >= range.getLow() && temp.high <= range.getHigh());
 		}
 	}
 
