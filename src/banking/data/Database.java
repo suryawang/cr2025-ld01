@@ -50,6 +50,7 @@ public class Database {
 		FileInputStream fis = null;
 		DataInputStream dis = null;
 		try {
+			rows = 0;
 			fis = new FileInputStream("Bank.dat");
 			dis = new DataInputStream(fis);
 			while (true) {

@@ -398,7 +398,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 			boolean b = openChildWindow("Deposit Money");
 			if (b == false) {
-				DepositMoney depMon = new DepositMoney();
+				DepositMoney depMon = new DepositMoney(db);
 				desktop.add(depMon);
 				depMon.show();
 			}
