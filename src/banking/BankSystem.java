@@ -659,9 +659,9 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 		boolean found = false;
 		for (int x = 0; x < total; x++) {
-			if (records[x][0].equals (rec)) {
+			if (records[x][0].equals(rec)) {
 				found = true;
-				printRecord (makeRecordPrint (x));
+				printRecord(makeRecordPrint(x));
 				break;
 			}
 		}

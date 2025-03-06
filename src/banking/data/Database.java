@@ -8,11 +8,9 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
-// Duplicate Code Records
 public class Database {
 	private int rows = 0;
 
-	// String Type Array use to Load Records From File.
 	private String records[][] = new String[500][6];
 
 	public String[] get(int i) {
@@ -21,7 +19,7 @@ public class Database {
 
 	public void add(String... args) throws IOException {
 		rows++;
-		set(rows-1, args);
+		set(rows - 1, args);
 	}
 
 	public void set(int index, String... args) throws IOException {
@@ -30,16 +28,25 @@ public class Database {
 		save();
 	}
 
-	// Temporary Field
-//	private FileInputStream fis;
-//	private DataInputStream dis;
+	public int findByNo(String no) {
+		for (int x = 0; x < rows; x++)
+			if (records[x][0].equals(no))
+				return x;
+		return -1;
+	}
+	public int findByName(String name) {
+		for (int x = 0; x < rows; x++)
+			if (records[x][1].equalsIgnoreCase(name))
+				return x;
+		return -1;
+	}
+
 	public void read() {
 		FileInputStream fis = null;
 		DataInputStream dis = null;
 		try {
 			fis = new FileInputStream("Bank.dat");
 			dis = new DataInputStream(fis);
-			// Loop to Populate the Array.
 			while (true) {
 				for (int i = 0; i < 6; i++) {
 					records[rows][i] = dis.readUTF();

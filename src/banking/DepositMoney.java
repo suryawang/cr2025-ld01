@@ -253,7 +253,7 @@ public class DepositMoney extends JInternalFrame implements ActionListener {
 		records[recCount][4] = "" + cboYear.getSelectedItem ();
 		records[recCount][5] = "" + (curr + deposit);
 		editFile ();	//Save This Array to File.
-	
+
 	}
 
 	//Function use to Save Records to File After editing the Record of User Choice.

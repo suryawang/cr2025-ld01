@@ -242,7 +242,7 @@ public class WithdrawMoney extends JInternalFrame implements ActionListener {
 
 		txtNo.setText (records[intRec][0]);
 		txtName.setText (records[intRec][1]);
-		curr = Integer.parseInt (records[intRec][5]);
+		curr = Integer.parseInt(records[intRec][5]);
 		recCount = intRec;
 
 	}

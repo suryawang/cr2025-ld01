@@ -221,17 +221,17 @@ public class DeleteCustomer extends JInternalFrame implements ActionListener {
 
 		try {
 			if (records != null) {
-				for(int i = recCount; i < total; i++) {
+				for (int i = recCount; i < total; i++) {
 					for (int r = 0; r < 6; r++) {
-						records[i][r] = records[i+1][r];				
-						if (records[i][r] == null) break;
+						records[i][r] = records[i + 1][r];
+						if (records[i][r] == null)
+							break;
 					}
 				}
 				total = total - 1;
-				deleteFile ();
+				deleteFile();
 			}
-		}
-		catch (ArrayIndexOutOfBoundsException ex) { }
+		}		catch (ArrayIndexOutOfBoundsException ex) { }
 
 	}
 
