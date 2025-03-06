@@ -407,7 +407,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 			boolean b = openChildWindow("Withdraw Money");
 			if (b == false) {
-				WithdrawMoney withMon = new WithdrawMoney();
+				WithdrawMoney withMon = new WithdrawMoney(db);
 				desktop.add(withMon);
 				withMon.show();
 			}
