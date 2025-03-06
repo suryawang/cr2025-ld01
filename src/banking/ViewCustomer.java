@@ -6,6 +6,8 @@ import java.awt.event.*;
 import java.io.*;
 import javax.swing.table.DefaultTableModel;
 
+import banking.data.Database;
+
 public class ViewCustomer extends JInternalFrame {
 
 	private JPanel jpShow = new JPanel();
@@ -14,19 +16,14 @@ public class ViewCustomer extends JInternalFrame {
 	private JTable tbCustomer;
 	private JScrollPane jspTable;
 
-	private int row = 0;
-	private int total = 0;
+	private Database db;
+	private String[][] rowData;
 
-	// String Type Array use to Load Records into File.
-	private String rowData[][];
-
-	private FileInputStream fis;
-	private DataInputStream dis;
-
-	ViewCustomer() {
+	ViewCustomer(Database db) {
 
 		// super(Title, Resizable, Closable, Maximizable, Iconifiable)
 		super("View All Account Holders", false, true, false, true);
+		this.db = db;
 		setSize(475, 280);
 
 		jpShow.setLayout(null);
@@ -50,40 +47,20 @@ public class ViewCustomer extends JInternalFrame {
 
 	// Function use to load all Records from File when Window Open.
 	void populateArray() {
-
-		// String Type Array use to Load Records into File.
-		String rows[][] = new String[500][6];
-		try {
-			fis = new FileInputStream("Bank.dat");
-			dis = new DataInputStream(fis);
-			// Loop to Populate the Array.
-			while (true) {
-				for (int i = 0; i < 6; i++) {
-					rows[row][i] = dis.readUTF();
-				}
-				row++;
-			}
-		} catch (Exception ex) {
-			total = row;
-			rowData = new String[total][4];
-			if (total == 0) {
-				JOptionPane.showMessageDialog(null, "Records File is Empty.\nEnter Records to Display.",
-						"BankSystem - EmptyFile", JOptionPane.PLAIN_MESSAGE);
-			} else {
-				for (int i = 0; i < total; i++) {
-					rowData[i][0] = rows[i][0];
-					rowData[i][1] = rows[i][1];
-					rowData[i][2] = rows[i][2] + ", " + rows[i][3] + ", " + rows[i][4];
-					rowData[i][3] = rows[i][5];
-				}
-				try {
-					dis.close();
-					fis.close();
-				} catch (Exception exp) {
-				}
+		db.read();
+		if (db.length() == 0) {
+			JOptionPane.showMessageDialog(null, "Records File is Empty.\nEnter Records to Display.",
+					"BankSystem - EmptyFile", JOptionPane.PLAIN_MESSAGE);
+		} else {
+			rowData = new String[db.length()][4];
+			for (int i = 0; i < db.length(); i++) {
+				var rows = db.get(i);
+				rowData[i][0] = rows[0];
+				rowData[i][1] = rows[1];
+				rowData[i][2] = rows[2] + ", " + rows[3] + ", " + rows[4];
+				rowData[i][3] = rows[5];
 			}
 		}
-
 	}
 
 	// Function to Create the Table and Add Data to Show.

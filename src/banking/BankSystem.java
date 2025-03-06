@@ -443,7 +443,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 			boolean b = openChildWindow("View Account Holders");
 			if (b == false) {
-				ViewOne vwOne = new ViewOne();
+				ViewOne vwOne = new ViewOne(db);
 				desktop.add(vwOne);
 				vwOne.show();
 			}
@@ -452,7 +452,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 			boolean b = openChildWindow("View All Account Holders");
 			if (b == false) {
-				ViewCustomer viewCus = new ViewCustomer();
+				ViewCustomer viewCus = new ViewCustomer(db);
 				desktop.add(viewCus);
 				viewCus.show();
 			}

@@ -3,6 +3,9 @@ package banking;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import banking.data.Database;
+
 import java.io.*;
 
 public class ViewOne extends JInternalFrame implements ActionListener {
@@ -13,19 +16,13 @@ public class ViewOne extends JInternalFrame implements ActionListener {
 	private JButton btnFirst, btnBack, btnNext, btnLast;
 
 	private int recCount = 0;
-	private int rows = 0;
-	private int total = 0;
+	private Database db;
 
-	// String Type Array use to Load Records From File.
-	private String records[][] = new String[500][6];
-
-	private FileInputStream fis;
-	private DataInputStream dis;
-
-	ViewOne() {
+	ViewOne(Database db) {
 
 		// super(Title, Resizable, Closable, Maximizable, Iconifiable)
 		super("View Account Holders", false, true, false, true);
+		this.db = db;
 		setSize(350, 235);
 
 		jpRec.setLayout(null);
@@ -123,8 +120,8 @@ public class ViewOne extends JInternalFrame implements ActionListener {
 			}
 		} else if (obj == btnNext) {
 			recCount = recCount + 1;
-			if (recCount == total) {
-				recCount = total - 1;
+			if (recCount == db.length()) {
+				recCount = db.length() - 1;
 				showRec(recCount);
 				JOptionPane.showMessageDialog(this, "You are on Last Record.", "BankSystem - End of Records",
 						JOptionPane.PLAIN_MESSAGE);
@@ -132,7 +129,7 @@ public class ViewOne extends JInternalFrame implements ActionListener {
 				showRec(recCount);
 			}
 		} else if (obj == btnLast) {
-			recCount = total - 1;
+			recCount = db.length() - 1;
 			showRec(recCount);
 		}
 
@@ -140,46 +137,26 @@ public class ViewOne extends JInternalFrame implements ActionListener {
 
 	// Function use to load all Records from File when Application Execute.
 	void populateArray() {
-
-		try {
-			fis = new FileInputStream("Bank.dat");
-			dis = new DataInputStream(fis);
-			// Loop to Populate the Array.
-			while (true) {
-				for (int i = 0; i < 6; i++) {
-					records[rows][i] = dis.readUTF();
-				}
-				rows++;
-			}
-		} catch (Exception ex) {
-			total = rows;
-			if (total == 0) {
-				JOptionPane.showMessageDialog(null, "Records File is Empty.\nEnter Records First to Display.",
-						"BankSystem - EmptyFile", JOptionPane.PLAIN_MESSAGE);
-				btnEnable();
-			} else {
-				try {
-					dis.close();
-					fis.close();
-				} catch (Exception exp) {
-				}
-			}
+		db.read();
+		if (db.length() == 0) {
+			JOptionPane.showMessageDialog(null, "Records File is Empty.\nEnter Records First to Display.",
+					"BankSystem - EmptyFile", JOptionPane.PLAIN_MESSAGE);
+			btnEnable();
 		}
-
 	}
 
 	// Function which display Record from Array onto the Form.
 	public void showRec(int intRec) {
-
-		txtNo.setText(records[intRec][0]);
-		txtName.setText(records[intRec][1]);
-		txtDate.setText(records[intRec][2] + ", " + records[intRec][3] + ", " + records[intRec][4]);
-		txtBal.setText(records[intRec][5]);
-		if (total == 0) {
-			txtRec.setText(intRec + "/" + total); // Showing Record No. and Total Records.
+		var records = db.get(intRec);
+		txtNo.setText(records[0]);
+		txtName.setText(records[1]);
+		txtDate.setText(records[2] + ", " + records[3] + ", " + records[4]);
+		txtBal.setText(records[5]);
+		if (db.length() == 0) {
+			txtRec.setText(intRec + "/" + db.length()); // Showing Record No. and Total Records.
 			txtDate.setText("");
 		} else {
-			txtRec.setText((intRec + 1) + "/" + total); // Showing Record No. and Total Records.
+			txtRec.setText((intRec + 1) + "/" + db.length()); // Showing Record No. and Total Records.
 		}
 
 	}
