@@ -4,23 +4,22 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import banking.custom.CustomFrame;
 import banking.data.Database;
 
 import java.io.*;
 
-public class DepositMoney extends JInternalFrame implements ActionListener {
+public class DepositMoney extends CustomFrame implements ActionListener {
 
 	private JPanel jpDep = new JPanel();
 	private JLabel lbNo, lbName, lbDate, lbDeposit;
-	private JTextField txtNo, txtName, txtDeposit;
+	private JTextField txtDeposit;
 	private JComboBox cboMonth, cboDay, cboYear;
 	private JButton btnSave, btnCancel;
 
 	private int recCount = 0;
 	private int curr;
 	private int deposit;
-
-	private Database db;
 
 	DepositMoney(Database db) {
 
@@ -165,48 +164,21 @@ public class DepositMoney extends JInternalFrame implements ActionListener {
 
 	}
 
-	// Function use to load all Records from File when Application Execute.
-	void populateArray() {
-		db.read();
-		if (db.length() == 0) {
-			JOptionPane.showMessageDialog(null, "Records File is Empty.\nEnter Records First to Display.",
-					"BankSystem - EmptyFile", JOptionPane.PLAIN_MESSAGE);
-			btnEnable();
-		}
-	}
-
-	// Function use to Find Record by Matching the Contents of Records Array with ID
-	// TextBox.
-	void findRec() {
-		int fi = db.findByNo(txtNo.getText());
-		if (fi > -1)
-			showRec(fi);
-		else {
-			String str = txtNo.getText();
-			txtClear();
-			JOptionPane.showMessageDialog(this, "Account No. " + str + " doesn't Exist.", "BankSystem - WrongNo",
-					JOptionPane.PLAIN_MESSAGE);
-		}
-	}
-
-	// Function which display Record from Array onto the Form.
-	public void showRec(int intRec) {
+	@Override
+	public void showRec (int intRec) {
+		super.showRec(intRec);
 		var records = db.get(intRec);
-		txtNo.setText(records[0]);
-		txtName.setText(records[1]);
 		curr = Integer.parseInt(records[5]);
 		recCount = intRec;
 	}
 
-	// Function use to Clear all TextFields of Window.
-	void txtClear() {
 
-		txtNo.setText("");
-		txtName.setText("");
-		txtDeposit.setText("");
-		txtNo.requestFocus();
-
+	@Override
+	public void txtClear () {
+		super.txtClear();
+		txtDeposit.setText ("");
 	}
+
 
 	// Function use to Edit an Element's Value of the Array.
 	public void editRec() {
@@ -223,16 +195,14 @@ public class DepositMoney extends JInternalFrame implements ActionListener {
 		}
 	}
 
-	// Function use to Lock all Buttons of Window.
-	void btnEnable() {
-
-		txtNo.setEnabled(false);
-		cboMonth.setEnabled(false);
-		cboDay.setEnabled(false);
-		cboYear.setEnabled(false);
-		txtDeposit.setEnabled(false);
-		btnSave.setEnabled(false);
-
+	@Override
+	public void btnEnable () {
+		super.btnEnable();
+		cboMonth.setEnabled (false);
+		cboDay.setEnabled (false);
+		cboYear.setEnabled (false);
+		txtDeposit.setEnabled (false);
+		btnSave.setEnabled (false);
 	}
 
 }

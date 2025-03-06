@@ -4,19 +4,19 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import banking.custom.CustomFrame;
 import banking.data.Database;
 
 import java.io.*;
 
-public class DeleteCustomer extends JInternalFrame implements ActionListener {
+public class DeleteCustomer extends CustomFrame implements ActionListener {
 
 	private JPanel jpDel = new JPanel();
 	private JLabel lbNo, lbName, lbDate, lbBal;
-	private JTextField txtNo, txtName, txtDate, txtBal;
+	private JTextField txtDate, txtBal;
 	private JButton btnDel, btnCancel;
 
 	private int recCount = 0;
-	private Database db;
 
 	DeleteCustomer(Database db) {
 
@@ -130,45 +130,17 @@ public class DeleteCustomer extends JInternalFrame implements ActionListener {
 
 	}
 
-	// Function use to load all Records from File when Application Execute.
-	void populateArray() {
-		db.read();
-		if (db.length() == 0) {
-			JOptionPane.showMessageDialog(null, "Records File is Empty.\nEnter Records First to Display.",
-					"BankSystem - EmptyFile", JOptionPane.PLAIN_MESSAGE);
-			btnEnable();
-		}
-	}
-
-	// Function use to Find Record by Matching the Contents of Records Array with ID
-	// TextBox.
-	void findRec() {
-		int fi = db.findByNo(txtNo.getText());
-		if (fi > -1)
-			showRec(fi);
-		else {
-			String str = txtNo.getText();
-			txtClear();
-			JOptionPane.showMessageDialog(this, "Account No. " + str + " doesn't Exist.", "BankSystem - WrongNo",
-					JOptionPane.PLAIN_MESSAGE);
-		}
-
-	}
-
-	// Function which display Record from Array onto the Form.
-	void showRec(int intRec) {
+	@Override
+	public void showRec(int intRec) {
+		super.showRec(intRec);
 		var records = db.get(intRec);
-		txtNo.setText(records[0]);
-		txtName.setText(records[1]);
 		txtDate.setText(records[2] + ", " + records[3] + ", " + records[4]);
 		txtBal.setText(records[5]);
 		recCount = intRec;
-
 	}
 
 	// Confirming the Deletion Decision made By User of Program.
 	void deletion() {
-
 		try {
 			// Show a Confirmation Dialog.
 			int reply = JOptionPane.showConfirmDialog(this,
@@ -199,23 +171,18 @@ public class DeleteCustomer extends JInternalFrame implements ActionListener {
 		}
 	}
 
-	// Function use to Clear all TextFields of Window.
-	void txtClear() {
-
-		txtNo.setText("");
-		txtName.setText("");
+	@Override
+	public void txtClear() {
+		super.txtClear();
 		txtDate.setText("");
 		txtBal.setText("");
 		txtNo.requestFocus();
-
 	}
 
-	// Function use to Lock Controls of Window.
-	void btnEnable() {
-
-		txtNo.setEnabled(false);
+	@Override
+	public void btnEnable() {
+		super.btnEnable();
 		btnDel.setEnabled(false);
-
 	}
 
 }

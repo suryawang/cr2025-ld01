@@ -4,18 +4,17 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import banking.custom.CustomFrame;
 import banking.data.Database;
 
 import java.io.*;
 
-public class FindAccount extends JInternalFrame implements ActionListener {
+public class FindAccount extends CustomFrame implements ActionListener {
 
 	private JPanel jpFind = new JPanel();
 	private JLabel lbNo, lbName, lbDate, lbBal;
-	private JTextField txtNo, txtName, txtDate, txtBal;
+	private JTextField txtDate, txtBal;
 	private JButton btnFind, btnCancel;
-
-	private Database db;
 
 	FindAccount(Database db) {
 
@@ -96,7 +95,6 @@ public class FindAccount extends JInternalFrame implements ActionListener {
 
 	// Function use By Buttons of Window to Perform Action as User Click Them.
 	public void actionPerformed(ActionEvent ae) {
-
 		Object obj = ae.getSource();
 
 		if (obj == btnFind) {
@@ -114,58 +112,26 @@ public class FindAccount extends JInternalFrame implements ActionListener {
 			setVisible(false);
 			dispose();
 		}
-
 	}
 
-	// Function use to load all Records from File when Application Execute.
-	void populateArray() {
-		db.read();
-		if (db.length() == 0) {
-			JOptionPane.showMessageDialog(null, "Records File is Empty.\nEnter Records First to Display.",
-					"BankSystem - EmptyFile", JOptionPane.PLAIN_MESSAGE);
-			btnEnable();
-		}
-	}
-
-	// Function use to Find Record by Matching the Contents of Records Array with ID
-	// TextBox.
-	void findRec() {
-		int fi = db.findByNo(txtNo.getText());
-		if (fi > -1)
-			showRec(fi);
-		else {
-			JOptionPane.showMessageDialog(this, "Account No. " + txtNo.getText() + " doesn't Exist.",
-					"BankSystem - WrongNo", JOptionPane.PLAIN_MESSAGE);
-			txtClear();
-		}
-	}
-
-	// Function which display Record from Array onto the Form.
+	@Override
 	public void showRec(int intRec) {
+		super.showRec(intRec);
 		var records = db.get(intRec);
-		txtNo.setText(records[0]);
-		txtName.setText(records[1]);
 		txtDate.setText(records[2] + ", " + records[3] + ", " + records[4]);
 		txtBal.setText(records[5]);
 	}
 
-	// Function use to Clear all TextFields of Window.
-	void txtClear() {
-
-		txtNo.setText("");
-		txtName.setText("");
+	@Override
+	public void txtClear() {
+		super.txtClear();
 		txtDate.setText("");
 		txtBal.setText("");
-		txtNo.requestFocus();
-
 	}
 
-	// Function use to Lock Controls of Window.
-	void btnEnable() {
-
-		txtNo.setEnabled(false);
+	@Override
+	public void btnEnable() {
+		super.btnEnable();
 		btnFind.setEnabled(false);
-
 	}
-
 }
