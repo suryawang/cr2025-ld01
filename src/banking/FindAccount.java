@@ -4,16 +4,15 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import banking.custom.CustomFrame;
+import banking.custom.DetailFrame;
 import banking.data.Database;
 
 import java.io.*;
 
-public class FindAccount extends CustomFrame implements ActionListener {
+public class FindAccount extends DetailFrame implements ActionListener {
 
 	private JPanel jpFind = new JPanel();
 	private JLabel lbNo, lbName, lbDate, lbBal;
-	private JTextField txtDate, txtBal;
 	private JButton btnFind, btnCancel;
 
 	FindAccount(Database db) {
@@ -112,21 +111,6 @@ public class FindAccount extends CustomFrame implements ActionListener {
 			setVisible(false);
 			dispose();
 		}
-	}
-
-	@Override
-	public void showRec(int intRec) {
-		super.showRec(intRec);
-		var records = db.get(intRec);
-		txtDate.setText(records[2] + ", " + records[3] + ", " + records[4]);
-		txtBal.setText(records[5]);
-	}
-
-	@Override
-	public void txtClear() {
-		super.txtClear();
-		txtDate.setText("");
-		txtBal.setText("");
 	}
 
 	@Override

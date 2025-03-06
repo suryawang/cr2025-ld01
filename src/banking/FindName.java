@@ -3,18 +3,17 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import banking.custom.DetailFrame;
 import banking.data.Database;
 
 import java.io.*;
 
-public class FindName extends JInternalFrame implements ActionListener {
+public class FindName extends DetailFrame implements ActionListener {
 
 	private JPanel jpFind = new JPanel();
 	private JLabel lbNo, lbName, lbDate, lbBal;
-	private JTextField txtNo, txtName, txtDate, txtBal;
 	private JButton btnFind, btnCancel;
 
-	private Database db;
 	FindName (Database db) {
 
 		//super(Title, Resizable, Closable, Maximizable, Iconifiable)
@@ -105,18 +104,8 @@ public class FindName extends JInternalFrame implements ActionListener {
 
 	}
 
-	//Function use to load all Records from File when Application Execute.
-	void populateArray () {
-		db.read();
-		if (db.length() == 0) {
-			JOptionPane.showMessageDialog(null, "Records File is Empty.\nEnter Records First to Display.",
-					"BankSystem - EmptyFile", JOptionPane.PLAIN_MESSAGE);
-			btnEnable();
-		}
-	}
-
-	//Function use to Find Record by Matching the Contents of Records Array with ID TextBox.
-	void findRec () {
+	@Override
+	public void findRec () {
 		int fi = db.findByName(txtName.getText());
 		if (fi > -1)
 			showRec(fi);
@@ -126,33 +115,9 @@ public class FindName extends JInternalFrame implements ActionListener {
 			txtClear();
 		}
 	}
-
-	//Function which display Record from Array onto the Form.
-	public void showRec (int intRec) {
-		var records = db.get(intRec);
-		txtNo.setText(records[0]);
-		txtName.setText(records[1]);
-		txtDate.setText(records[2] + ", " + records[3] + ", " + records[4]);
-		txtBal.setText(records[5]);
+	@Override
+	public void btnEnable() {
+		super.btnEnable();
+		btnFind.setEnabled(false);
 	}
-
-	//Function use to Clear all TextFields of Window.
-	void txtClear () {
-
-		txtNo.setText ("");
-		txtName.setText ("");
-		txtDate.setText ("");
-		txtBal.setText ("");
-		txtName.requestFocus ();
-
-	}
-
-	//Function use to Lock Controls of Window.
-	void btnEnable () {
-
-		txtName.setEnabled (false);
-		btnFind.setEnabled (false);
-
-	}
-
 }	

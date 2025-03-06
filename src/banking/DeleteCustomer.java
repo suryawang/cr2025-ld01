@@ -4,16 +4,15 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import banking.custom.CustomFrame;
+import banking.custom.DetailFrame;
 import banking.data.Database;
 
 import java.io.*;
 
-public class DeleteCustomer extends CustomFrame implements ActionListener {
+public class DeleteCustomer extends DetailFrame implements ActionListener {
 
 	private JPanel jpDel = new JPanel();
 	private JLabel lbNo, lbName, lbDate, lbBal;
-	private JTextField txtDate, txtBal;
 	private JButton btnDel, btnCancel;
 
 	private int recCount = 0;
@@ -133,9 +132,6 @@ public class DeleteCustomer extends CustomFrame implements ActionListener {
 	@Override
 	public void showRec(int intRec) {
 		super.showRec(intRec);
-		var records = db.get(intRec);
-		txtDate.setText(records[2] + ", " + records[3] + ", " + records[4]);
-		txtBal.setText(records[5]);
 		recCount = intRec;
 	}
 
@@ -169,14 +165,6 @@ public class DeleteCustomer extends CustomFrame implements ActionListener {
 			JOptionPane.showMessageDialog(this, "There are Some Problem with File", "BankSystem - Problem",
 					JOptionPane.PLAIN_MESSAGE);
 		}
-	}
-
-	@Override
-	public void txtClear() {
-		super.txtClear();
-		txtDate.setText("");
-		txtBal.setText("");
-		txtNo.requestFocus();
 	}
 
 	@Override
