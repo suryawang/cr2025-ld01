@@ -13,6 +13,10 @@ public class Database {
 
 	private String records[][] = new String[500][6];
 
+	public int length() {
+		return rows;
+	}
+
 	public String[] get(int i) {
 		return records[i];
 	}
@@ -34,6 +38,7 @@ public class Database {
 				return x;
 		return -1;
 	}
+
 	public int findByName(String name) {
 		for (int x = 0; x < rows; x++)
 			if (records[x][1].equalsIgnoreCase(name))
