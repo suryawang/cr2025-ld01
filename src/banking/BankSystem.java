@@ -416,7 +416,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 			boolean b = openChildWindow("Delete Account Holder");
 			if (b == false) {
-				DeleteCustomer delCus = new DeleteCustomer();
+				DeleteCustomer delCus = new DeleteCustomer(db);
 				desktop.add(delCus);
 				delCus.show();
 			}
