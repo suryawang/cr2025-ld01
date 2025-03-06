@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import banking.custom.CustomFrame;
 import banking.data.Database;
+import banking.model.Customer;
 
 import java.io.*;
 
@@ -165,27 +166,27 @@ public class DepositMoney extends CustomFrame implements ActionListener {
 	}
 
 	@Override
-	public void showRec (int intRec) {
+	public void showRec(int intRec) {
 		super.showRec(intRec);
 		var records = db.get(intRec);
-		curr = Integer.parseInt(records[5]);
+		curr = records.getBalance();
 		recCount = intRec;
 	}
 
-
 	@Override
-	public void txtClear () {
+	public void txtClear() {
 		super.txtClear();
-		txtDeposit.setText ("");
+		txtDeposit.setText("");
 	}
-
 
 	// Function use to Edit an Element's Value of the Array.
 	public void editRec() {
 		deposit = Integer.parseInt(txtDeposit.getText());
 		try {
-			db.set(recCount, txtNo.getText(), txtName.getText(), "" + cboMonth.getSelectedItem(),
-					"" + cboDay.getSelectedItem(), "" + cboYear.getSelectedItem(), "" + (curr + deposit));
+			db.set(recCount,
+					new Customer(txtNo.getText(), txtName.getText(), "" + cboMonth.getSelectedItem(),
+							Integer.parseInt("" + cboDay.getSelectedItem()),
+							Integer.parseInt("" + cboYear.getSelectedItem()), (curr + deposit)));
 			JOptionPane.showMessageDialog(this, "The File is Updated Successfully", "BankSystem - Record Saved",
 					JOptionPane.PLAIN_MESSAGE);
 			txtClear();
@@ -196,13 +197,13 @@ public class DepositMoney extends CustomFrame implements ActionListener {
 	}
 
 	@Override
-	public void btnEnable () {
+	public void btnEnable() {
 		super.btnEnable();
-		cboMonth.setEnabled (false);
-		cboDay.setEnabled (false);
-		cboYear.setEnabled (false);
-		txtDeposit.setEnabled (false);
-		btnSave.setEnabled (false);
+		cboMonth.setEnabled(false);
+		cboDay.setEnabled(false);
+		cboYear.setEnabled(false);
+		txtDeposit.setEnabled(false);
+		btnSave.setEnabled(false);
 	}
 
 }

@@ -37,8 +37,8 @@ public class CustomFrame extends JInternalFrame {
 
 	public void showRec(int intRec) {
 		var records = db.get(intRec);
-		txtNo.setText(records[0]);
-		txtName.setText(records[1]);
+		txtNo.setText(records.getNo());
+		txtName.setText(records.getName());
 	}
 
 	public void txtClear() {

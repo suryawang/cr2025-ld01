@@ -6,42 +6,41 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import javax.swing.JOptionPane;
+import banking.model.Customer;
 
 public class Database {
 	private int rows = 0;
 
-	private String records[][] = new String[500][6];
+	private Customer records[] = new Customer[500];
 
 	public int length() {
 		return rows;
 	}
 
-	public String[] get(int i) {
+	public Customer get(int i) {
 		return records[i];
 	}
 
-	public void add(String... args) throws IOException {
+	public void add(Customer value) throws IOException {
 		rows++;
-		set(rows - 1, args);
+		set(rows - 1, value);
 	}
 
-	public void set(int index, String... args) throws IOException {
-		for (int i = 0; i < 6; i++)
-			records[index][i] = args[i];
+	public void set(int index, Customer value) throws IOException {
+		records[index] = value;
 		save();
 	}
 
 	public int findByNo(String no) {
 		for (int x = 0; x < rows; x++)
-			if (records[x][0].equals(no))
+			if (records[x].getNo().equals(no))
 				return x;
 		return -1;
 	}
 
 	public int findByName(String name) {
 		for (int x = 0; x < rows; x++)
-			if (records[x][1].equalsIgnoreCase(name))
+			if (records[x].getName().equalsIgnoreCase(name))
 				return x;
 		return -1;
 	}
@@ -54,9 +53,12 @@ public class Database {
 			fis = new FileInputStream("Bank.dat");
 			dis = new DataInputStream(fis);
 			while (true) {
+				var d = new String[6];
 				for (int i = 0; i < 6; i++) {
-					records[rows][i] = dis.readUTF();
+					d[i] = dis.readUTF();
 				}
+				records[rows] = new Customer(d[0], d[1], d[2], Integer.parseInt(d[3]), Integer.parseInt(d[4]),
+						Integer.parseInt(d[5]));
 				rows++;
 			}
 		} catch (Exception ex) {
@@ -74,10 +76,9 @@ public class Database {
 		DataOutputStream dos = new DataOutputStream(fos);
 		if (records != null) {
 			for (int i = 0; i < rows; i++) {
+				var d = records[i].toRecord();
 				for (int c = 0; c < 6; c++) {
-					dos.writeUTF(records[i][c]);
-					if (records[i][c] == null)
-						break;
+					dos.writeUTF(d[c]);
 				}
 			}
 			dos.close();
@@ -87,13 +88,8 @@ public class Database {
 
 	public void delete(int index) throws IOException {
 		if (records != null) {
-			for (int i = index; i < rows - 1; i++) {
-				for (int r = 0; r < 6; r++) {
-					records[i][r] = records[i + 1][r];
-					if (records[i][r] == null)
-						break;
-				}
-			}
+			for (int i = index; i < rows - 1; i++)
+				records[i] = records[i + 1];
 			rows--;
 			save();
 		}

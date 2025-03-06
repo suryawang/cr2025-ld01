@@ -13,8 +13,8 @@ public class DetailFrame extends CustomFrame {
 	public void showRec(int intRec) {
 		super.showRec(intRec);
 		var records = db.get(intRec);
-		txtDate.setText(records[2] + ", " + records[3] + ", " + records[4]);
-		txtBal.setText(records[5]);
+		txtDate.setText(records.getDate());
+		txtBal.setText(records.getBalance() + "");
 	}
 
 	@Override

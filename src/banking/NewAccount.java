@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import banking.data.Database;
+import banking.model.Customer;
 
 import java.io.*;
 
@@ -170,8 +171,9 @@ public class NewAccount extends JInternalFrame implements ActionListener {
 	// Function use to add new Element to Array.
 	void saveArray() {
 		try {
-			db.add(txtNo.getText(), txtName.getText(), "" + cboMonth.getSelectedItem(), "" + cboDay.getSelectedItem(),
-					"" + cboYear.getSelectedItem(), txtDeposit.getText());
+			db.add(new Customer(txtNo.getText(), txtName.getText(), "" + cboMonth.getSelectedItem(),
+					Integer.parseInt("" + cboDay.getSelectedItem()), Integer.parseInt("" + cboYear.getSelectedItem()),
+					Integer.parseInt(txtDeposit.getText())));
 			JOptionPane.showMessageDialog(this, "The Record has been Saved Successfully", "BankSystem - Record Saved",
 					JOptionPane.PLAIN_MESSAGE);
 			txtClear();
