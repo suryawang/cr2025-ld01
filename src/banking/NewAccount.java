@@ -3,6 +3,9 @@ package banking;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import banking.data.Database;
+
 import java.io.*;
 
 public class NewAccount extends JInternalFrame implements ActionListener {
@@ -13,23 +16,12 @@ public class NewAccount extends JInternalFrame implements ActionListener {
 	private JComboBox cboMonth, cboDay, cboYear;
 	private JButton btnSave, btnCancel;
 
-	private int count = 0;
-	private int rows = 0;
-	private int total = 0;
+	private Database db;
 
-	// String Type Array use to Load Records From File.
-	private String records[][] = new String[500][6];
-
-	// String Type Array use to Save Records into File.
-	private String saves[][] = new String[500][6];
-
-	private FileInputStream fis;
-	private DataInputStream dis;
-
-	NewAccount() {
-
+	NewAccount(Database db) {
 		// super(Title, Resizable, Closable, Maximizable, Iconifiable)
 		super("Create New Account", false, true, false, true);
+		this.db = db;
 		setSize(335, 235);
 
 		jpInfo.setBounds(0, 0, 500, 115);
@@ -160,87 +152,33 @@ public class NewAccount extends JInternalFrame implements ActionListener {
 
 	// Function use to load all Records from File when Application Execute.
 	void populateArray() {
-
-		try {
-			fis = new FileInputStream("Bank.dat");
-			dis = new DataInputStream(fis);
-			// Loop to Populate the Array.
-			while (true) {
-				for (int i = 0; i < 6; i++) {
-					records[rows][i] = dis.readUTF();
-				}
-				rows++;
-			}
-		} catch (Exception ex) {
-			total = rows;
-			if (total == 0) {
-			} else {
-				try {
-					dis.close();
-					fis.close();
-				} catch (Exception exp) {
-				}
-			}
-		}
-
+		db.read();
 	}
 
 	// Function use to Find Record by Matching the Contents of Records Array with ID
 	// TextBox.
 	void findRec() {
-
-		boolean found = false;
-		for (int x = 0; x < total; x++) {
-			if (records[x][0].equals(txtNo.getText())) {
-				found = true;
-				JOptionPane.showMessageDialog(this, "Account No. " + txtNo.getText() + " is Already Exist.",
-						"BankSystem - WrongNo", JOptionPane.PLAIN_MESSAGE);
-				txtClear();
-				break;
-			}
-		}
-		if (found == false) {
+		int fi = db.findByNo(txtNo.getText());
+		if (fi > -1) {
+			JOptionPane.showMessageDialog(this, "Account No. " + txtNo.getText() + " is Already Exist.",
+					"BankSystem - WrongNo", JOptionPane.PLAIN_MESSAGE);
+			txtClear();
+		} else
 			saveArray();
-		}
-
 	}
 
 	// Function use to add new Element to Array.
 	void saveArray() {
-
-		saves[count][0] = txtNo.getText();
-		saves[count][1] = txtName.getText();
-		saves[count][2] = "" + cboMonth.getSelectedItem();
-		saves[count][3] = "" + cboDay.getSelectedItem();
-		saves[count][4] = "" + cboYear.getSelectedItem();
-		saves[count][5] = txtDeposit.getText();
-		saveFile(); // Save This Array to File.
-		count++;
-
-	}
-
-	// Function use to Save new Record to the File.
-	void saveFile() {
-
 		try {
-			FileOutputStream fos = new FileOutputStream("Bank.dat", true);
-			DataOutputStream dos = new DataOutputStream(fos);
-			dos.writeUTF(saves[count][0]);
-			dos.writeUTF(saves[count][1]);
-			dos.writeUTF(saves[count][2]);
-			dos.writeUTF(saves[count][3]);
-			dos.writeUTF(saves[count][4]);
-			dos.writeUTF(saves[count][5]);
+			db.add(txtNo.getText(), txtName.getText(), "" + cboMonth.getSelectedItem(), "" + cboDay.getSelectedItem(),
+					"" + cboYear.getSelectedItem(), txtDeposit.getText());
 			JOptionPane.showMessageDialog(this, "The Record has been Saved Successfully", "BankSystem - Record Saved",
 					JOptionPane.PLAIN_MESSAGE);
 			txtClear();
-			dos.close();
-			fos.close();
 		} catch (IOException ioe) {
 			JOptionPane.showMessageDialog(this, "There are Some Problem with File", "BankSystem - Problem",
 					JOptionPane.PLAIN_MESSAGE);
 		}
-
 	}
 
 	// Function use to Clear all TextFields of Window.

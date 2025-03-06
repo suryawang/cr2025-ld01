@@ -381,7 +381,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 			boolean b = openChildWindow("Create New Account");
 			if (b == false) {
-				NewAccount newAcc = new NewAccount();
+				NewAccount newAcc = new NewAccount(db);
 				desktop.add(newAcc);
 				newAcc.show();
 			}
