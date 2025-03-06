@@ -425,7 +425,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 			boolean b = openChildWindow("Search Customer [By No.]");
 			if (b == false) {
-				FindAccount fndAcc = new FindAccount();
+				FindAccount fndAcc = new FindAccount(db);
 				desktop.add(fndAcc);
 				fndAcc.show();
 			}
@@ -434,7 +434,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 			boolean b = openChildWindow("Search Customer [By Name]");
 			if (b == false) {
-				FindName fndNm = new FindName();
+				FindName fndNm = new FindName(db);
 				desktop.add(fndNm);
 				fndNm.show();
 			}
