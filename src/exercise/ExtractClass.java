@@ -2,27 +2,25 @@ package exercise;
 public class ExtractClass {
 // todo extract class TelephoneNumber from class Person
 	class Person {
-	  private String name;
-	  private String officeAreaCode;
-	  private String officeNumber;
+	  private PersonData data = new PersonData();
 
-	  public String getName() {
-		return name;
+	public String getName() {
+		return data.name;
 	  }
 	  public String getTelephoneNumber() {
-		return ("(" + officeAreaCode + ") " + officeNumber);
+		return ("(" + data.officeAreaCode + ") " + data.officeNumber);
 	  }
 	  public String getOfficeAreaCode() {
-		return officeAreaCode;
+		return data.officeAreaCode;
 	  }
 	  public void setOfficeAreaCode(String arg) {
-		officeAreaCode = arg;
+		data.officeAreaCode = arg;
 	  }
 	  public String getOfficeNumber() {
-		return officeNumber;
+		return data.officeNumber;
 	  }
 	  public void setOfficeNumber(String arg) {
-		officeNumber = arg;
+		data.officeNumber = arg;
 	  }
 	}
 }
