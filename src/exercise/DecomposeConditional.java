@@ -5,30 +5,40 @@ import java.util.Date;
 public class DecomposeConditional {
 
 	class Stadium {
-		  private final Date SUMMER_START = new Date(1500);
-		  private final Date SUMMER_END = new Date(2500);
-		  public double summerRate;
-		  public double winterRate;
-		  public double winterServiceCharge;
-		  public Stadium(double summer, double winter, double service) {
-			  this.summerRate = summer;
-			  this.winterRate = winter;
-			  this.winterServiceCharge = service;
-		  }
-		  
-		  // TODO: change the conditional logic in this method using
-		  //       decompose conditional
-		  public double getTicketPrice(Date date, int quantity) {
-		    double charge;
-		    if (date.before(SUMMER_START) || date.after(SUMMER_END)) {
-		      charge = quantity * winterRate + winterServiceCharge;
-		    }
-		    else {
-		      charge = quantity * summerRate;
-		    }
-		    return charge;
-		  }
+		private final Date SUMMER_START = new Date(1500);
+		private final Date SUMMER_END = new Date(2500);
+		public double summerRate;
+		public double winterRate;
+		public double winterServiceCharge;
+		public Stadium(double summer, double winter, double service) {
+			this.summerRate = summer;
+			this.winterRate = winter;
+			this.winterServiceCharge = service;
 		}
+
+		// TODO: change the conditional logic in this method using
+		//       decompose conditional
+		
+		public double getTicketPrice(Date date, int quantity) {
+			if (isWinterSeason(date)) {
+				return calculateWinterCharge(quantity);
+			}
+			return calculateSummerCharge(quantity);
+		}
+
+		private boolean isWinterSeason(Date date) {
+			return date.before(SUMMER_START) || date.after(SUMMER_END);
+		}
+
+		private double calculateWinterCharge(int quantity) {
+			return quantity * winterRate + winterServiceCharge;
+		}
+
+		private double calculateSummerCharge(int quantity) {
+			return quantity * summerRate;
+		}
+	}
+	
 	public void test() {
 		Stadium s = new Stadium(100, 90, 25);
 		System.out.println(s.getTicketPrice(new Date(1000), 10));
