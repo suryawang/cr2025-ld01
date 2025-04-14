@@ -1,75 +1,95 @@
 package exercise;
 import java.util.Enumeration;
 
-
 public class ExtractMethod {
+    public static void main(String[] args) {
+        ExtractMethod test = new ExtractMethod("Andi");
+        test.printOwing();
+    }
 
-	public static void main(String[] args) {
-		ExtractMethod test = new ExtractMethod("Andi");
-		test.printOwing();
-	}
-	private Order orders;
-	private String name;
-	public String getName() {
-		return name;
-	}
-	public ExtractMethod(String name) {
-		this.name = name;
-		orders = new Order();
-	}
-	// TODO: reduce this method with extract method
-	void printOwing() {
-	  Enumeration elements = orders.elements();
-	  double outstanding = 0.0;
+    private Order orders;
+    private String name;
 
-	  // print banner
-	  System.out.println ("*****************************");
-	  System.out.println ("****** Customer totals ******");
-	  System.out.println ("*****************************");
+    public ExtractMethod(String name) {
+        this.name = name;
+        this.orders = new Order();
+    }
 
-	  // print owings
-	  while (elements.hasMoreElements()) {
-	    Order each = (Order) elements.nextElement();
-	    outstanding += each.getAmount();
-	  }
+    public String getName() {
+        return name;
+    }
 
-	  // print details
-	  System.out.println("name: " + name);
-	  System.out.println("amount: " + outstanding);
-	}
-	
-	class Order implements Enumeration {
-		private double [] amounts;
-		private int currentIndex;
-		public Order() {
-			amounts = new double[5];
-			currentIndex  = 0;
-			amounts[0] = 12.0;
-			amounts[1] =  2.5;
-			amounts[2] =  3.2;
-			amounts[3] =  7.05;
-			amounts[4] =  6.0;
-		}
-		
-		public boolean hasMoreElements() {
-			if(currentIndex < amounts.length) {
-				return true;
-			}
-			return false;
-		}
+    void printOwing() {
+        printBanner();
+        double outstanding = calculateOutstanding();
+        printDetails(outstanding);
+    }
 
-		public Enumeration elements() {
-			return this;
-		}
+    private void printBanner() {
+        System.out.println("*****************************");
+        System.out.println("****** Customer totals ******");
+        System.out.println("*****************************");
+    }
 
-		public double getAmount() {
-			return amounts[currentIndex - 1];
-		}
+    private double calculateOutstanding() {
+        double outstanding = 0.0;
+        Enumeration<Order> elements = orders.elements();
+        while (elements.hasMoreElements()) {
+            outstanding += elements.nextElement().getAmount();
+        }
+        return outstanding;
+    }
 
-		public Object nextElement() {
-			currentIndex ++;
-			return this;
-		}
-		
-	}
+    private void printDetails(double outstanding) {
+        System.out.println("name: " + name);
+        System.out.println("amount: " + outstanding);
+    }
+
+    class Order implements Enumeration<Order> {
+        private double[] amounts;
+        private int currentIndex;
+
+        public Order() {
+            amounts = new double[]{12.0, 2.5, 3.2, 7.05, 6.0};
+            currentIndex = 0;
+        }
+
+        @Override
+        public boolean hasMoreElements() {
+            return currentIndex < amounts.length;
+        }
+
+        @Override
+        public Order nextElement() {
+            return new Order(amounts[currentIndex++]);
+        }
+
+        private double amount;
+
+        private Order(double amount) {
+            this.amount = amount;
+        }
+
+        public double getAmount() {
+            return amount;
+        }
+
+        public Enumeration<Order> elements() {
+            return new OrderEnumeration();
+        }
+
+        private class OrderEnumeration implements Enumeration<Order> {
+            private int index = 0;
+
+            @Override
+            public boolean hasMoreElements() {
+                return index < amounts.length;
+            }
+
+            @Override
+            public Order nextElement() {
+                return new Order(amounts[index++]);
+            }
+        }
+    }
 }
