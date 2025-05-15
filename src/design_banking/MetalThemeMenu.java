@@ -8,7 +8,7 @@ import java.awt.event.*;
 
 public class MetalThemeMenu extends JMenu implements ActionListener {
 
-	MetalTheme[] themes;
+	private MetalTheme[] themes;
 
 	public MetalThemeMenu(String name, MetalTheme[] themeArray) {
 

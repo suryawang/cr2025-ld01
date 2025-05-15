@@ -13,7 +13,7 @@ import javax.swing.event.*;
  * @author Steve Wilson
  */
 public class UISwitchListener implements PropertyChangeListener {
-	JComponent componentToSwitch;
+	private JComponent componentToSwitch;
 
 	public UISwitchListener(JComponent c) {
 		componentToSwitch = c;

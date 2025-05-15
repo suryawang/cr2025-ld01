@@ -571,7 +571,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 	// Following Functions use for Printing Records & Report of BankSystem.
 
-	void getAccountNo() {
+	private void getAccountNo() {
 
 		String printing;
 		rows = 0;
@@ -599,7 +599,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 	// Function use to load all Records from File when Application Execute.
 
-	boolean populateArray() {
+	private boolean populateArray() {
 
 		boolean b = false;
 		try {
@@ -634,7 +634,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 	// Function use to Find Record by Matching the Contents of Records Array with
 	// InputBox.
 
-	void findRec(String rec) {
+	private void findRec(String rec) {
 
 		boolean found = false;
 		for (int x = 0; x < total; x++) {
@@ -654,7 +654,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 	// Function use to make Current Record ready for Print.
 
-	String makeRecordPrint(int rec) {
+	private String makeRecordPrint(int rec) {
 
 		String data;
 		String data0 = "               BankSystem [Pvt] Limited.               \n"; // Page Title.
@@ -678,7 +678,7 @@ public class BankSystem extends JFrame implements ActionListener, ItemListener {
 
 	// Function use to Print the Current Record.
 
-	void printRecord(String rec) {
+	private void printRecord(String rec) {
 
 		StringReader sr = new StringReader(rec);
 		LineNumberReader lnr = new LineNumberReader(sr);
