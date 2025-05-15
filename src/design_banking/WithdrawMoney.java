@@ -43,18 +43,7 @@ public class WithdrawMoney extends JInternalFrame implements ActionListener {
 
 		txtNo = new JTextField();
 		txtNo.setHorizontalAlignment(JTextField.RIGHT);
-		// Checking the Accunt No. Provided By User on Lost Focus of the TextBox.
-		txtNo.addFocusListener(new FocusListener() {
-			public void focusGained(FocusEvent e) {
-			}
-
-			public void focusLost(FocusEvent fe) {
-				if (txtNo.getText().equals("")) {
-				} else {
-					findRec(); // Finding if Account No. Already Exist or Not.
-				}
-			}
-		});
+		handleFocusChange();
 		txtNo.setBounds(105, 20, 205, 25);
 
 		txtName = new JTextField();
@@ -64,40 +53,9 @@ public class WithdrawMoney extends JInternalFrame implements ActionListener {
 		txtWithdraw.setHorizontalAlignment(JTextField.RIGHT);
 		txtWithdraw.setBounds(105, 125, 205, 25);
 
-		// Restricting The User Input to only Numerics in Numeric TextBoxes.
-		txtNo.addKeyListener(new KeyAdapter() {
-			public void keyTyped(KeyEvent ke) {
-				char c = ke.getKeyChar();
-				if (!((Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE)))) {
-					getToolkit().beep();
-					ke.consume();
-				}
-			}
-		});
-		txtWithdraw.addKeyListener(new KeyAdapter() {
-			public void keyTyped(KeyEvent ke) {
-				char c = ke.getKeyChar();
-				if (!((Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE)))) {
-					getToolkit().beep();
-					ke.consume();
-				}
-			}
-		});
+		handleEvent();
 
-		// Creating Date Option.
-		String Months[] = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
-				"October", "November", "December" };
-		cboMonth = new JComboBox(Months);
-		cboDay = new JComboBox();
-		cboYear = new JComboBox();
-		for (int i = 1; i <= 31; i++) {
-			String days = "" + i;
-			cboDay.addItem(days);
-		}
-		for (int i = 2000; i <= 2015; i++) {
-			String years = "" + i;
-			cboYear.addItem(years);
-		}
+		generateDate();
 
 		// Aligning The Date Option Controls.
 		cboMonth.setBounds(105, 90, 92, 25);
@@ -129,6 +87,54 @@ public class WithdrawMoney extends JInternalFrame implements ActionListener {
 		getContentPane().add(jpWith);
 
 		setVisible(true);
+	}
+
+	private void handleFocusChange() {
+		txtNo.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+			}
+
+			public void focusLost(FocusEvent fe) {
+				if (!txtNo.getText().equals("")) findRec();
+			}
+		});
+	}
+
+	private void handleEvent() {
+		txtNo.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+				char c = ke.getKeyChar();
+				if (!((Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE)))) {
+					getToolkit().beep();
+					ke.consume();
+				}
+			}
+		});
+		txtWithdraw.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+				char c = ke.getKeyChar();
+				if (!((Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE)))) {
+					getToolkit().beep();
+					ke.consume();
+				}
+			}
+		});
+	}
+
+	private void generateDate() {
+		String Months[] = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+				"October", "November", "December" };
+		cboMonth = new JComboBox(Months);
+		cboDay = new JComboBox();
+		cboYear = new JComboBox();
+		for (int i = 1; i <= 31; i++) {
+			String days = "" + i;
+			cboDay.addItem(days);
+		}
+		for (int i = 2000; i <= 2015; i++) {
+			String years = "" + i;
+			cboYear.addItem(years);
+		}
 	}
 
 	// Function use By Buttons of Window to Perform Action as User Click Them.
