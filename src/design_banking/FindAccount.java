@@ -3,6 +3,10 @@ package design_banking;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import design_banking.model.Customer;
+import design_banking.repo.CustomerRepository;
+
 import java.io.*;
 
 public class FindAccount extends JInternalFrame implements ActionListener {
@@ -12,15 +16,7 @@ public class FindAccount extends JInternalFrame implements ActionListener {
 	private JTextField txtNo, txtName, txtDate, txtBal;
 	private JButton btnFind, btnCancel;
 
-	private int count = 0;
-	private int rows = 0;
-	private int total = 0;
-
-	// String Type Array use to Load Records From File.
-	private String records[][] = new String[500][6];
-
-	private FileInputStream fis;
-	private DataInputStream dis;
+	private CustomerRepository repo = CustomerRepository.getInstance();
 
 	FindAccount() {
 
@@ -88,14 +84,9 @@ public class FindAccount extends JInternalFrame implements ActionListener {
 		jpFind.add(btnFind);
 		jpFind.add(btnCancel);
 
-		// Adding Panel to Window.
 		getContentPane().add(jpFind);
 
-		populateArray(); // Load All Existing Records in Memory.
-
-		// In the End Showing the New Account Window.
 		setVisible(true);
-
 	}
 
 	// Function use By Buttons of Window to Perform Action as User Click Them.
@@ -109,8 +100,6 @@ public class FindAccount extends JInternalFrame implements ActionListener {
 						"BankSystem - EmptyField", JOptionPane.PLAIN_MESSAGE);
 				txtNo.requestFocus();
 			} else {
-				rows = 0;
-				populateArray(); // Load All Existing Records in Memory.
 				findRec(); // Finding if Account No. Exist or Not.
 			}
 		}
@@ -122,49 +111,11 @@ public class FindAccount extends JInternalFrame implements ActionListener {
 
 	}
 
-	// Function use to load all Records from File when Application Execute.
-	void populateArray() {
-
-		try {
-			fis = new FileInputStream("Bank.dat");
-			dis = new DataInputStream(fis);
-			// Loop to Populate the Array.
-			while (true) {
-				for (int i = 0; i < 6; i++) {
-					records[rows][i] = dis.readUTF();
-				}
-				rows++;
-			}
-		} catch (Exception ex) {
-			total = rows;
-			if (total == 0) {
-				JOptionPane.showMessageDialog(null, "Records File is Empty.\nEnter Records First to Display.",
-						"BankSystem - EmptyFile", JOptionPane.PLAIN_MESSAGE);
-				btnEnable();
-			} else {
-				try {
-					dis.close();
-					fis.close();
-				} catch (Exception exp) {
-				}
-			}
-		}
-
-	}
-
-	// Function use to Find Record by Matching the Contents of Records Array with ID
-	// TextBox.
-	void findRec() {
-
-		boolean found = false;
-		for (int x = 0; x < total; x++) {
-			if (records[x][0].equals(txtNo.getText())) {
-				found = true;
-				showRec(x);
-				break;
-			}
-		}
-		if (found == false) {
+	private void findRec() {
+		var curr = repo.find(txtNo.getText());
+		if (curr != null)
+			showRec(curr);
+		else {
 			JOptionPane.showMessageDialog(this, "Account No. " + txtNo.getText() + " doesn't Exist.",
 					"BankSystem - WrongNo", JOptionPane.PLAIN_MESSAGE);
 			txtClear();
@@ -172,19 +123,14 @@ public class FindAccount extends JInternalFrame implements ActionListener {
 
 	}
 
-	// Function which display Record from Array onto the Form.
-	public void showRec(int intRec) {
-
-		txtNo.setText(records[intRec][0]);
-		txtName.setText(records[intRec][1]);
-		txtDate.setText(records[intRec][2] + ", " + records[intRec][3] + ", " + records[intRec][4]);
-		txtBal.setText(records[intRec][5]);
-
+	private void showRec(Customer c) {
+		txtNo.setText(c.getId());
+		txtName.setText(c.getName());
+		txtDate.setText(c.getDate());
+		txtBal.setText(c.getBalance()+"");
 	}
 
-	// Function use to Clear all TextFields of Window.
-	void txtClear() {
-
+	private void txtClear() {
 		txtNo.setText("");
 		txtName.setText("");
 		txtDate.setText("");
@@ -192,13 +138,4 @@ public class FindAccount extends JInternalFrame implements ActionListener {
 		txtNo.requestFocus();
 
 	}
-
-	// Function use to Lock Controls of Window.
-	void btnEnable() {
-
-		txtNo.setEnabled(false);
-		btnFind.setEnabled(false);
-
-	}
-
 }
