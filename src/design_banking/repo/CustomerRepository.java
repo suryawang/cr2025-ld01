@@ -1,7 +1,10 @@
 package design_banking.repo;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -22,8 +25,38 @@ public class CustomerRepository {
 		return instance;
 	}
 
+	public Customer find(String id) {
+		for (var c : data)
+			if (c.getId().equals(id))
+				return c;
+		return null;
+	}
+
+	public Customer findByName(String name) {
+		for (var c : data)
+			if (c.getName().equalsIgnoreCase(name))
+				return c;
+		return null;
+	}
+
 	public List<Customer> getData() {
 		return Collections.unmodifiableList(data);
+	}
+
+	public void add(Customer customer) throws IOException {
+		data.add(customer);
+		save();
+	}
+
+	public void change(Customer old, Customer customer) throws IOException {
+		var i = data.indexOf(old);
+		data.set(i, customer);
+		save();
+	}
+
+	public void remove(Customer customer) throws IOException {
+		data.remove(customer);
+		save();
 	}
 
 	private void read() {
@@ -46,5 +79,15 @@ public class CustomerRepository {
 			} catch (Exception exp) {
 			}
 		}
+	}
+
+	private void save() throws IOException {
+		var fos = new FileOutputStream("Bank.dat");
+		var dos = new DataOutputStream(fos);
+		for (var d : data)
+			for (var s : d.toDb())
+				dos.writeUTF(s);
+		dos.close();
+		fos.close();
 	}
 }
